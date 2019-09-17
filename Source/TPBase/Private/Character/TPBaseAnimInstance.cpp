@@ -383,14 +383,14 @@ void UTPBaseAnimInstance::CalculateGroundedLeaningValues_Implementation() {
 	if (!MovementComponent) { return; }
 
 	float DeltaTime = GetWorld()->GetDeltaSeconds();
-	VelocityDifference = (PrevVelocityRotation - PrevVelocityRotationABP).GetNormalized().Yaw / DeltaTime;
+	float VelocityDifference = (PrevVelocityRotation - PrevVelocityRotationABP).GetNormalized().Yaw / DeltaTime;
 	PrevVelocityRotationABP = PrevVelocityRotation;
 	  
 	float LeanRotation =
 		FMath::GetMappedRangeValueClamped(FVector2D(WalkSpeed, RunSpeed), FVector2D(0.0f, 1.0f), Speed) *
 		FMath::GetMappedRangeValueClamped(FVector2D(-200.0f, 200.0f), FVector2D(-1.0f, 1.0f), VelocityDifference);
 
-	AccelerationDifferential = (Speed - PreviousSpeed) / DeltaTime;
+	float AccelerationDifferential = (Speed - PreviousSpeed) / DeltaTime;
 	PreviousSpeed = Speed;
 
 	float LeanAcceleration;

@@ -412,11 +412,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	float PreviousSpeed;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
-	float VelocityDifference;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
+	//float VelocityDifference;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
-	float AccelerationDifferential;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
+	//float AccelerationDifferential;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	float StartPosition;
