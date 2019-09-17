@@ -467,10 +467,10 @@ public:
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "TPBase|InternalVariables")
 	bool bIsDead;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	bool bIsMoving;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	bool bHasMovementInput;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
@@ -494,13 +494,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	float AimYawRate;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	float MovementDifferential;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	float RotationDifferential;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	float YawDifferential;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
@@ -509,7 +509,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	float RotationRateMultiplier;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	FVector MovementInput;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
@@ -530,7 +530,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	FRotator PrevVelocityRotation;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	FRotator PrevMovementRotation;
 
 	UPROPERTY()

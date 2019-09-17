@@ -24,7 +24,12 @@ void UMapIconWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime) 
 
 		// Orientation
 		FRotator Rotation = MyActor->GetActorRotation();
+
+		// 4.22.3
 		CurrentIcon->SetRenderAngle(Rotation.Yaw);
+
+		// 4.23.0
+		//CurrentIcon->SetRenderTransformAngle(Rotation.Yaw);
 
 		// Determine visibility
 		if (!OnMap && !bAlwaysShow) {
