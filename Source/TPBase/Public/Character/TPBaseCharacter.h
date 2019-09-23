@@ -137,43 +137,43 @@ public:
 
 	/** Get camera settings based on character animation state */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
-	FCameraSettings GetCameraTargetSettings();
+	FCameraSettings GetCameraTargetSettings() const;
 
 	/** Get character velocity based on animation state */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
-	FVector GetCharacterVelocity();
+	FVector GetCharacterVelocity() const;
 
 	/** Determine rotation rate from character state */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
 	float GetCharacterRotationRate(float SlowSpeed, float SlowRate, float FastSpeed, float FastRate);
 
 	/** Get current aiming state */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
 	bool IsAiming() const;
 
 	/** Get current running state */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
 	bool IsRunning() const;
 
 	/** Get current sprinting state */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
 	bool IsSprinting() const;
 
 	/** Get current stance */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
 	EStance GetStance() const;
 
 	/** Get current gait mode */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
 	EGaitMode GetGaitMode() const;
 
 	/** Get current rotation mode */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
 	ERotationMode GetRotationMode() const;
 
 	/** Get current locomotion mode */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
-	ELocomotionMode GetLocomotionMode();
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
+	ELocomotionMode GetLocomotionMode() const;
 
 	/** Get crouched speed configuration input */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Getters")
@@ -239,20 +239,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
 	void SetCameraMode(ECameraMode NewMode);
 
-	/** Interface callback for updating forward foot */
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerSetForwardFoot(bool bRightFoot);
-
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
-	void SetForwardFoot(bool bRightFoot);
-
-	/** Interface callback for updating dead state */
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerSetIsDead(bool bDead);
-	
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
-	void SetIsDead(bool bDead);
-
 	/** Interface callback for updating camera view shoulder */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
 	void SetRightShoulder(bool bRight);
@@ -285,6 +271,32 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
 	void SetSprintSpeed(float NewSpeed);
 
+	/** Called to display debug traces */
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "TPBase|Character|Server")
+	void ServerSetShowSettings(bool bShow);
+
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
+	void SetShowSettings(bool bShow);
+
+	/** Called to display debug traces */
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "TPBase|Character|Server")
+	void ServerSetShowTraces(bool bShow);
+
+	/** Interface callback for updating forward foot */
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "TPBase|Character|Server")
+	void ServerSetForwardFoot(bool bRightFoot);
+
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
+	void SetForwardFoot(bool bRightFoot);
+
+	/** Interface callback for updating dead state */
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "TPBase|Character|Server")
+	void ServerSetIsDead(bool bDead);
+	
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
+	void SetIsDead(bool bDead);
+
+
 public:
 	////////////////////////////////////////////////////////////////////
 	//
@@ -300,18 +312,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
 	void UpdateCapsuleVisibility();
 
-	/** Called to display debug traces */
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerSetShowSettings(bool bShow);
-
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
-	void SetShowSettings(bool bShow);
-
-	/** Called to display debug traces */
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerSetShowTraces(bool bShow);
-
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
 	void SetShowTraces(bool bShow);
 	
 	/** Displays character state information on screen */
@@ -372,38 +373,38 @@ public:
 	////////////////////////////////////////////////////////////////////
 
 	/** Handles the manipulation of the ragdoll state */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Ragdoll")
 	void ManageRagdoll();
 
 	/** Called to update ragdoll state information */
-	UFUNCTION(NetMulticast, Reliable)
+	UFUNCTION(NetMulticast, Reliable, BlueprintCallable, Category = "TPBase|Character|Server")
 	void MulticastRagdollUpdate(bool bGrounded, FVector DollLocation, FVector NewLocation, FRotator NewRotation);
 
-	UFUNCTION(Server, Reliable, WithValidation)
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "TPBase|Character|Server")
 	void ServerRagdollUpdate(bool bGrounded, FVector DollLocation, FVector NewLocation, FRotator NewRotation);
 
 	/** Called to enter character into ragdoll state */
-	UFUNCTION(NetMulticast, Reliable)
+	UFUNCTION(NetMulticast, Reliable, BlueprintCallable, Category = "TPBase|Character|Server")
 	void MulticastEnterRagdoll();
 
-	UFUNCTION(Server, Reliable, WithValidation)
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "TPBase|Character|Server")
 	void ServerEnterRagdoll();
 
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Ragdoll")
 	void EnterRagdoll();
 
 	/** Called to exit character from ragdoll state */
-	UFUNCTION(NetMulticast, Reliable)
+	UFUNCTION(NetMulticast, Reliable, BlueprintCallable, Category = "TPBase|Character|Server")
 	void MulticastExitRagdoll();
 
-	UFUNCTION(Server, Reliable, WithValidation)
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "TPBase|Character|Server")
 	void ServerExitRagdoll();
 
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Ragdoll")
 	void ExitRagdoll();
 
 	/** Determines what it says it does :) */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Ragdoll")
 	bool RagdollLineTrace(FVector InLocation, FRotator InRotation, FVector& OutLocation, FRotator& OutRotation);
 
 

@@ -733,7 +733,7 @@ void ATPBaseCharacter::SwitchCamera() {
 ////////////////////////////////////////////////////////////////////
 
 // Get camera settings based on character animation state
-FCameraSettings ATPBaseCharacter::GetCameraTargetSettings() {
+FCameraSettings ATPBaseCharacter::GetCameraTargetSettings() const {
 
 	// Ragdolling
 	if (bIsRagdoll) { return CameraTargets.Ragdoll;	}
@@ -773,7 +773,7 @@ FCameraSettings ATPBaseCharacter::GetCameraTargetSettings() {
 
 
 // Get character velocity based on animation state 
-FVector ATPBaseCharacter::GetCharacterVelocity() {
+FVector ATPBaseCharacter::GetCharacterVelocity() const {
 	if (bIsRagdoll) { return GetMesh()->GetPhysicsLinearVelocity(PelvisBoneName); }
 	return GetVelocity();
 }
@@ -850,7 +850,7 @@ ERotationMode ATPBaseCharacter::GetRotationMode() const {
 
 
 // Get current locomotion mode 
-ELocomotionMode ATPBaseCharacter::GetLocomotionMode() {
+ELocomotionMode ATPBaseCharacter::GetLocomotionMode() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return ELocomotionMode::eNone; }
 	return CharMov->GetLocomotionMode();

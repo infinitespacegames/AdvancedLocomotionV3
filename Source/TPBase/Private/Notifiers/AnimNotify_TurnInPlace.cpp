@@ -30,7 +30,7 @@ void UAnimNotify_TurnInPlace::NotifyTick(USkeletalMeshComponent* MeshComp, UAnim
 	float Next = CurveAsset->GetFloatValue((PlayRate * FrameDeltaTime) + Position);
 
 	float Yaw = Next - MPos;
-	MyOwner->DelayedRotation_Notify(FRotator(0.0f, Yaw, 0.0f), 0.0f);
+	MyOwner->DelayedRotation_Notify(FRotator(0.0f, Yaw, 0.0f), 0.2f);
 
 	if (!MyOwner->GetVelocity().Equals(FVector(0.0f), 0.001)) {
 		AInst->Montage_Stop(0.2f, Montage);
