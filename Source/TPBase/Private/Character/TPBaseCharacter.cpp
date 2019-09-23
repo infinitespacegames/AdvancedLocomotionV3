@@ -801,6 +801,7 @@ float ATPBaseCharacter::GetCharacterRotationRate(float SlowSpeed, float SlowRate
 }
 
 
+// Get current aiming state 
 bool ATPBaseCharacter::IsAiming() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return false; }
@@ -808,6 +809,7 @@ bool ATPBaseCharacter::IsAiming() const {
 }
 
 
+// Get current running state 
 bool ATPBaseCharacter::IsRunning() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return false; }
@@ -815,6 +817,7 @@ bool ATPBaseCharacter::IsRunning() const {
 }
 
 
+// Get current sprinting state 
 bool ATPBaseCharacter::IsSprinting() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return false; }
@@ -822,6 +825,7 @@ bool ATPBaseCharacter::IsSprinting() const {
 }
 
 
+// Get current stance 
 EStance ATPBaseCharacter::GetStance() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return EStance::eStanding; }
@@ -829,6 +833,7 @@ EStance ATPBaseCharacter::GetStance() const {
 }
 
 
+// Get current gait mode 
 EGaitMode ATPBaseCharacter::GetGaitMode() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return EGaitMode::eNone; }
@@ -836,6 +841,7 @@ EGaitMode ATPBaseCharacter::GetGaitMode() const {
 }
 
 
+// Get current rotation mode 
 ERotationMode ATPBaseCharacter::GetRotationMode() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return ERotationMode::eLookingMode; }
@@ -843,6 +849,7 @@ ERotationMode ATPBaseCharacter::GetRotationMode() const {
 }
 
 
+// Get current locomotion mode 
 ELocomotionMode ATPBaseCharacter::GetLocomotionMode() {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return ELocomotionMode::eNone; }
@@ -850,6 +857,7 @@ ELocomotionMode ATPBaseCharacter::GetLocomotionMode() {
 }
 
 
+// Get crouched speed configuration input 
 float ATPBaseCharacter::GetCrouchingSpeed() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return 0.0f; }
@@ -857,6 +865,7 @@ float ATPBaseCharacter::GetCrouchingSpeed() const {
 }
 
 
+// Get walking speed configuration input 
 float ATPBaseCharacter::GetWalkingSpeed() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return 0.0f; }
@@ -864,6 +873,7 @@ float ATPBaseCharacter::GetWalkingSpeed() const {
 }
 
 
+// Get running speed configuration input 
 float ATPBaseCharacter::GetRunningSpeed() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return 0.0f; }
@@ -871,6 +881,7 @@ float ATPBaseCharacter::GetRunningSpeed() const {
 }
 
 
+// Get sprinting speed configuration input 
 float ATPBaseCharacter::GetSprintingSpeed() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return 0.0f; }
@@ -878,6 +889,7 @@ float ATPBaseCharacter::GetSprintingSpeed() const {
 }
 
 
+// Get walk acceleration configuration input 
 float ATPBaseCharacter::GetWalkAcceleration() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return 0.0f; }
@@ -885,6 +897,7 @@ float ATPBaseCharacter::GetWalkAcceleration() const {
 }
 
 
+// Get run acceleration configuration input 
 float ATPBaseCharacter::GetRunAcceleration() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return 0.0f; }
@@ -892,6 +905,7 @@ float ATPBaseCharacter::GetRunAcceleration() const {
 }
 
 
+// Get walk deceleration configuration input 
 float ATPBaseCharacter::GetWalkDeceleration() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return 0.0f; }
@@ -899,6 +913,7 @@ float ATPBaseCharacter::GetWalkDeceleration() const {
 }
 
 
+// Get run deceleration configuration input 
 float ATPBaseCharacter::GetRunDeceleration() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return 0.0f; }
@@ -906,6 +921,7 @@ float ATPBaseCharacter::GetRunDeceleration() const {
 }
 
 
+// Get walk ground friction configuration input 
 float ATPBaseCharacter::GetWalkGroundFriction() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return 0.0f; }
@@ -913,6 +929,7 @@ float ATPBaseCharacter::GetWalkGroundFriction() const {
 }
 
 
+// Get run ground friction configuration input 
 float ATPBaseCharacter::GetRunGroundFriction() const {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return 0.0f; }
@@ -1004,15 +1021,14 @@ void ATPBaseCharacter::SetForwardFoot(bool bRightFoot) {
 }
 
 
+// Interface callback for updating dead state 
 void ATPBaseCharacter::ServerSetIsDead_Implementation(bool bDead) {
 	SetIsDead(bDead);
 }
 
-
 bool ATPBaseCharacter::ServerSetIsDead_Validate(bool bDead) {
 	return true;
 }
-
 
 void ATPBaseCharacter::SetIsDead(bool bDead) {
 	if (!HasAuthority()) {
@@ -1173,6 +1189,7 @@ void ATPBaseCharacter::CameraLerpCallback(float Alpha) {
 }
 
 
+// Updates capsule and arrow visibility 
 void ATPBaseCharacter::UpdateCapsuleVisibility() {
 	GetCapsuleComponent()->SetHiddenInGame(!bShowSettings);
 	Arrows->SetHiddenInGame(!bShowSettings, true);
@@ -1327,131 +1344,6 @@ void ATPBaseCharacter::UpdateCamera(UCurveFloat* LerpCurve) {
 }
 
 
-// Called to enter character into ragdoll state 
-void ATPBaseCharacter::MulticastEnterRagdoll_Implementation() {
-
-	// Set ragdoll state
-	bIsRagdoll = true;
-	RagdollLocation = GetMesh()->GetSocketLocation(PelvisBoneName);
-
-	// Set pawn movement
-	SetReplicateMovement(false);
-	GetCharacterMovement()->SetMovementMode(MOVE_None);
-
-	// Update capsule and mesh
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	GetMesh()->SetCollisionObjectType(ECC_PhysicsBody);
-	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetMesh()->SetAllBodiesBelowSimulatePhysics(PelvisBoneName, true, true);
-
-	//UpdateCamera(CameraLerpCurves[2]);
-}
-
-
-void ATPBaseCharacter::ServerEnterRagdoll_Implementation() {
-	EnterRagdoll();
-}
-
-
-bool ATPBaseCharacter::ServerEnterRagdoll_Validate() {
-	return true;
-}
-
-
-void ATPBaseCharacter::EnterRagdoll() {
-	if (!HasAuthority()) {
-		ServerEnterRagdoll();
-		return;
-	}
-	MulticastEnterRagdoll();
-}
-
-
-// Called to exit character from ragdoll state 
-void ATPBaseCharacter::MulticastExitRagdoll_Implementation() {
-
-	// Set pawn movement
-	if (bRagdollGrounded) {
-		GetCharacterMovement()->SetMovementMode(MOVE_Walking);
-	}
-	else {
-		GetCharacterMovement()->SetMovementMode(MOVE_Falling);
-	}
-	GetCharacterMovement()->Velocity = GetCharacterVelocity();
-
-	// Save pose for blending play get-up
-	auto AInst = Cast<UTPBaseAnimInstance>(GetMesh()->GetAnimInstance());
-	if (AInst) {
-		AInst->SavePoseSnapshot(RagdollPoseName);
-
-		// Play getup montage if grounded
-		if (bRagdollGrounded) {
-			if (GetMesh()->GetSocketRotation(PelvisBoneName).Roll > 0.0f) {
-				AInst->Montage_Play(AInst->GetUpFront);
-			}
-			else {
-				AInst->Montage_Play(AInst->GetUpBack);
-			}
-		}
-	}
-
-	// Update capsule and mesh
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetMesh()->SetCollisionObjectType(ECC_Pawn);
-	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	GetMesh()->SetAllBodiesSimulatePhysics(false);
-
-	bIsRagdoll = false;
-	SetReplicateMovement(true);
-	UpdateCamera(CameraLerpCurves[2]);
-}
-
-
-void ATPBaseCharacter::ServerExitRagdoll_Implementation() {
-	ExitRagdoll();
-}
-
-
-bool ATPBaseCharacter::ServerExitRagdoll_Validate() {
-	return true;
-}
-
-
-void ATPBaseCharacter::ExitRagdoll() {
-	if (!HasAuthority()) {
-		ServerExitRagdoll();
-		return;
-	}
-	MulticastExitRagdoll();
-}
-
-
-// Handle animNotify turn in place event 
-void ATPBaseCharacter::DelayedRotationNotify(FRotator AdditiveRotation, float DelayTime) {
-
-	// No delay
-	if (DelayTime == 0.0f) {
-		AddCharacterRotation(AdditiveRotation);
-		return;
-	}
-
-	// Delay character rotation
-	FTimerHandle DelayTimer;
-	GetWorld()->GetTimerManager().SetTimer(DelayTimer, [this, AdditiveRotation]() {
-		AddCharacterRotation(AdditiveRotation);
-	}, 1.0f, false, DelayTime);
-}
-
-
-// Handle animNotify camera shake event 
-void ATPBaseCharacter::CameraShakeNotify(TSubclassOf<UCameraShake> ShakeClass, float ShakeScale) {
-	APlayerController* PC = Cast<APlayerController>(GetController());
-	if (PC) {
-		PC->ClientPlayCameraShake(ShakeClass, ShakeScale);
-	}
-}
-
-
 // Create arrow scene components
 void ATPBaseCharacter::CreateArrowComponents() {
 
@@ -1577,181 +1469,7 @@ void ATPBaseCharacter::UpdateArrowComponents(bool bAlwaysUpdate) {
 
 ////////////////////////////////////////////////////////////////////
 //
-//   Character calculation functions
-//
-////////////////////////////////////////////////////////////////////
-
-// Determines the looking yaw offset 
-FRotator ATPBaseCharacter::CalculateLookingDirection(float NEAngle, float NWAngle, float SEAngle, float SWAngle, float Buffer, float InterpSpeed) {
-
-	// TODO: Remove CardinalDirection from global variables ?
-
-	// Yaw deviation between look and control rotators
-	float dYaw = bHasMovementInput ?
-		(PrevMovementRotation - LookRotation).GetNormalized().Yaw :
-		(PrevVelocityRotation - LookRotation).GetNormalized().Yaw;
-
-		// Determine the sector of yaw deviation
-		if (WithinCardinalRange(dYaw, NWAngle, NEAngle, Buffer, ECardinalDirection::eNorth)) {
-			CardinalDirection = ECardinalDirection::eNorth;
-		}
-		else if (WithinCardinalRange(dYaw, NEAngle, SEAngle, Buffer, ECardinalDirection::eEast)) {
-			CardinalDirection = ECardinalDirection::eEast;
-		}
-		else if (WithinCardinalRange(dYaw, SWAngle, NWAngle, Buffer, ECardinalDirection::eWest)) {
-			CardinalDirection = ECardinalDirection::eWest;
-		}
-		else {
-			CardinalDirection = ECardinalDirection::eSouth;
-		}
-
-	// Adjust based on cardinal direction
-	switch (CardinalDirection) {
-	case ECardinalDirection::eEast:
-		dYaw -= 90.0f;
-		break;
-	case ECardinalDirection::eSouth:
-		dYaw += (dYaw > 0) ? -180.0f : 180.0f;
-		break;
-	case ECardinalDirection::eWest:
-		dYaw += 90.0f;
-		break;
-	}
-
-	// Adjust for walking
-	auto CharMov = GetTPBaseMovement();
-	if (!IsAiming() && GetGaitMode() == EGaitMode::eWalking) {
-		dYaw = 0.0f;
-	}
-
-	// Interpolate
-	RotationOffset = FMath::FInterpTo(RotationOffset, dYaw, GetWorld()->GetDeltaSeconds(), InterpSpeed);
-
-	FRotator Look(0.0f, LookRotation.Yaw + RotationOffset, 0.0f);
-	return Look;
-}
-
-
-// Determines if within range of given cardinal direction with a tolerance 
-float ATPBaseCharacter::WithinCardinalRange(float Value, float Min, float Max, float Tol, ECardinalDirection Cardinal) {
-	bool bInRange;
-	if (Cardinal == CardinalDirection) {
-		bInRange = (Value >= Min - Tol) && (Value <= Max + Tol) ? true : false;
-	}
-	else {
-		bInRange = (Value >= Min + Tol) && (Value <= Max - Tol) ? true : false;
-	}
-	return bInRange;
-}
-
-
-// Determines what it says it does :) 
-bool ATPBaseCharacter::RagdollLineTrace(FVector InLocation, FRotator InRotation, FVector& OutLocation, FRotator& OutRotation) {
-
-	// Keeps capsule facing proper direction if pelvis is inverted
-	if (InRotation.Roll > 0.0f) {
-		OutRotation = FRotator(0.0f, InRotation.Yaw, 0.0f);
-	}
-	else {
-		OutRotation = FRotator(0.0f, InRotation.Yaw - 180.0f, 0.0f);
-	}
-
-	// Trace endpoint
-	float HHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
-	FVector TraceEnd = InLocation;
-	TraceEnd.Z -= HHeight;
-
-	// Setup parameters
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(this);
-	QueryParams.bTraceComplex = false;
-
-	// Trace world from location
-	FHitResult Hit;
-	OutLocation = InLocation;
-	bool bGrounded = GetWorld()->LineTraceSingleByChannel(Hit, InLocation, TraceEnd, ECC_Visibility, QueryParams);
-	if (bGrounded) {
-		OutLocation = Hit.ImpactPoint;
-		OutLocation.Z += HHeight;
-
-		// Debug traces
-		if (bShowTraces) {
-			DrawDebugPoint(GetWorld(), Hit.ImpactPoint, 10.0f, FColor::Red);
-			DrawDebugLine(GetWorld(), InLocation, Hit.ImpactPoint, FColor::Red);
-		}
-	}
-
-	return bGrounded;
-}
-
-
-// Calculate the character current state
-void ATPBaseCharacter::CalculateStateVariables() {
-
-	CharacterRotation = GetActorRotation();
-
-	// Difference between velocity and character
-	FVector MyVelocity = GetCharacterVelocity();
-	float MySpeed = MyVelocity.Size2D();
-	bIsMoving = MySpeed > 1.0f;
-	if (bIsMoving) {
-		PrevVelocityRotation = MyVelocity.Rotation().GetNormalized();
-		YawDifferential = (PrevVelocityRotation - CharacterRotation).GetNormalized().Yaw;
-	}
-
-	// Difference between movement input and velocity
-	MovementInput = GetTPBaseMovement()->GetMovementInput();
-	bHasMovementInput = MovementInput.Size2D() > 0.001f;
-	if (bHasMovementInput) {
-		PrevMovementRotation = MovementInput.Rotation().GetNormalized();
-		MovementDifferential = (PrevMovementRotation - PrevVelocityRotation).GetNormalized().Yaw;
-	}
-
-	// Difference between looking and character
-	float PrevAimYaw = LookRotation.Yaw;
-	LookRotation = GetTPBaseMovement()->GetControlRotation();
-	AimYawRate = (LookRotation.Yaw - PrevAimYaw) / GetWorld()->GetDeltaSeconds();
-	AimYawDelta = (LookRotation - CharacterRotation).GetNormalized().Yaw;
-
-	// TODO: Refactor to function
-	// Camera gait mode
-	if (CameraGaitMode == EGaitMode::eSprinting) {
-		if (MySpeed < GetWalkingSpeed()) {
-			CameraGaitMode = EGaitMode::eWalking;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-		else if (MySpeed < GetRunningSpeed()) {
-			CameraGaitMode = EGaitMode::eRunning;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-	}
-	else if (CameraGaitMode == EGaitMode::eRunning) {
-		if (MySpeed > GetRunningSpeed()) {
-			CameraGaitMode = EGaitMode::eSprinting;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-		else if (MySpeed < GetWalkingSpeed()) {
-			CameraGaitMode = EGaitMode::eWalking;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-	}
-	else {
-		if (MySpeed > GetRunningSpeed()) {
-			CameraGaitMode = EGaitMode::eSprinting;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-		else if (MySpeed > GetWalkingSpeed()) {
-			CameraGaitMode = EGaitMode::eRunning;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-	}
-}
-
-
-
-////////////////////////////////////////////////////////////////////
-//
-//   Lost Boys
+//   Character calculation / management functions
 //
 ////////////////////////////////////////////////////////////////////
 
@@ -1819,6 +1537,166 @@ void ATPBaseCharacter::ManageCharacterRotation() {
 }
 
 
+// Calculate the character current state
+void ATPBaseCharacter::CalculateStateVariables() {
+
+	CharacterRotation = GetActorRotation();
+
+	// Difference between velocity and character
+	FVector MyVelocity = GetCharacterVelocity();
+	float MySpeed = MyVelocity.Size2D();
+	bIsMoving = MySpeed > 1.0f;
+	if (bIsMoving) {
+		PrevVelocityRotation = MyVelocity.Rotation().GetNormalized();
+		YawDifferential = (PrevVelocityRotation - CharacterRotation).GetNormalized().Yaw;
+	}
+
+	// Difference between movement input and velocity
+	MovementInput = GetTPBaseMovement()->GetMovementInput();
+	bHasMovementInput = MovementInput.Size2D() > 0.001f;
+	if (bHasMovementInput) {
+		PrevMovementRotation = MovementInput.Rotation().GetNormalized();
+		MovementDifferential = (PrevMovementRotation - PrevVelocityRotation).GetNormalized().Yaw;
+	}
+
+	// Difference between looking and character
+	float PrevAimYaw = LookRotation.Yaw;
+	LookRotation = GetTPBaseMovement()->GetControlRotation();
+	AimYawRate = (LookRotation.Yaw - PrevAimYaw) / GetWorld()->GetDeltaSeconds();
+	AimYawDelta = (LookRotation - CharacterRotation).GetNormalized().Yaw;
+
+	// TODO: Refactor to function
+	// Camera gait mode
+	if (CameraGaitMode == EGaitMode::eSprinting) {
+		if (MySpeed < GetWalkingSpeed()) {
+			CameraGaitMode = EGaitMode::eWalking;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+		else if (MySpeed < GetRunningSpeed()) {
+			CameraGaitMode = EGaitMode::eRunning;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+	}
+	else if (CameraGaitMode == EGaitMode::eRunning) {
+		if (MySpeed > GetRunningSpeed()) {
+			CameraGaitMode = EGaitMode::eSprinting;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+		else if (MySpeed < GetWalkingSpeed()) {
+			CameraGaitMode = EGaitMode::eWalking;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+	}
+	else {
+		if (MySpeed > GetRunningSpeed()) {
+			CameraGaitMode = EGaitMode::eSprinting;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+		else if (MySpeed > GetWalkingSpeed()) {
+			CameraGaitMode = EGaitMode::eRunning;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+	}
+}
+
+
+// Determines the looking yaw offset 
+FRotator ATPBaseCharacter::CalculateLookingDirection(float NEAngle, float NWAngle, float SEAngle, float SWAngle, float Buffer, float InterpSpeed) {
+
+	// TODO: Remove CardinalDirection from global variables ?
+
+	// Yaw deviation between look and control rotators
+	float dYaw = bHasMovementInput ?
+		(PrevMovementRotation - LookRotation).GetNormalized().Yaw :
+		(PrevVelocityRotation - LookRotation).GetNormalized().Yaw;
+
+		// Determine the sector of yaw deviation
+		if (WithinCardinalRange(dYaw, NWAngle, NEAngle, Buffer, ECardinalDirection::eNorth)) {
+			CardinalDirection = ECardinalDirection::eNorth;
+		}
+		else if (WithinCardinalRange(dYaw, NEAngle, SEAngle, Buffer, ECardinalDirection::eEast)) {
+			CardinalDirection = ECardinalDirection::eEast;
+		}
+		else if (WithinCardinalRange(dYaw, SWAngle, NWAngle, Buffer, ECardinalDirection::eWest)) {
+			CardinalDirection = ECardinalDirection::eWest;
+		}
+		else {
+			CardinalDirection = ECardinalDirection::eSouth;
+		}
+
+	// Adjust based on cardinal direction
+	switch (CardinalDirection) {
+	case ECardinalDirection::eEast:
+		dYaw -= 90.0f;
+		break;
+	case ECardinalDirection::eSouth:
+		dYaw += (dYaw > 0) ? -180.0f : 180.0f;
+		break;
+	case ECardinalDirection::eWest:
+		dYaw += 90.0f;
+		break;
+	}
+
+	// Adjust for walking
+	auto CharMov = GetTPBaseMovement();
+	if (!IsAiming() && GetGaitMode() == EGaitMode::eWalking) {
+		dYaw = 0.0f;
+	}
+
+	// Interpolate
+	RotationOffset = FMath::FInterpTo(RotationOffset, dYaw, GetWorld()->GetDeltaSeconds(), InterpSpeed);
+
+	FRotator Look(0.0f, LookRotation.Yaw + RotationOffset, 0.0f);
+	return Look;
+}
+
+
+// Determines if within range of given cardinal direction with a tolerance 
+float ATPBaseCharacter::WithinCardinalRange(float Value, float Min, float Max, float Tol, ECardinalDirection Cardinal) {
+	bool bInRange;
+	if (Cardinal == CardinalDirection) {
+		bInRange = (Value >= Min - Tol) && (Value <= Max + Tol) ? true : false;
+	}
+	else {
+		bInRange = (Value >= Min + Tol) && (Value <= Max - Tol) ? true : false;
+	}
+	return bInRange;
+}
+
+
+// Handle animNotify turn in place event 
+void ATPBaseCharacter::DelayedRotation_Notify(FRotator AdditiveRotation, float DelayTime) {
+
+	// No delay
+	if (DelayTime == 0.0f) {
+		AddCharacterRotation(AdditiveRotation);
+		return;
+	}
+
+	// Delay character rotation
+	FTimerHandle DelayTimer;
+	GetWorld()->GetTimerManager().SetTimer(DelayTimer, [this, AdditiveRotation]() {
+		AddCharacterRotation(AdditiveRotation);
+		}, 1.0f, false, DelayTime);
+}
+
+
+// Handle animNotify camera shake event 
+void ATPBaseCharacter::CameraShake_Notify(TSubclassOf<UCameraShake> ShakeClass, float ShakeScale) {
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC) {
+		PC->ClientPlayCameraShake(ShakeClass, ShakeScale);
+	}
+}
+
+
+
+////////////////////////////////////////////////////////////////////
+//
+//   Ragdoll management functions
+//
+////////////////////////////////////////////////////////////////////
+
 // Handles the manipulation of the ragdoll state
 void ATPBaseCharacter::ManageRagdoll() {
 
@@ -1867,6 +1745,7 @@ void ATPBaseCharacter::ManageRagdoll() {
 }
 
 
+// Called to update ragdoll state information 
 void ATPBaseCharacter::MulticastRagdollUpdate_Implementation(bool bGrounded, FVector DollLocation, FVector NewLocation, FRotator NewRotation) {
 
 	if (!IsLocallyControlled()) {
@@ -1880,32 +1759,145 @@ void ATPBaseCharacter::MulticastRagdollUpdate_Implementation(bool bGrounded, FVe
 	}
 }
 
-
 void ATPBaseCharacter::ServerRagdollUpdate_Implementation(bool bGrounded, FVector DollLocation, FVector NewLocation, FRotator NewRotation) {
 	MulticastRagdollUpdate(bGrounded, DollLocation, NewLocation, NewRotation);
 }
-
 
 bool ATPBaseCharacter::ServerRagdollUpdate_Validate(bool bGrounded, FVector DollLocation, FVector NewLocation, FRotator NewRotation) {
 	return true;
 }
 
 
-// Handle animNotify turn in place event 
-void ATPBaseCharacter::DelayedRotation(FRotator AdditiveRotation, float DelayTime) {
-	float time = GetWorld()->GetDeltaSeconds();
+// Called to enter character into ragdoll state 
+void ATPBaseCharacter::MulticastEnterRagdoll_Implementation() {
 
-	// No delay
-	if (DelayTime == 0.0f) {
-		AddCharacterRotation(AdditiveRotation);
-		return;
-	}
+	// Set ragdoll state
+	bIsRagdoll = true;
+	RagdollLocation = GetMesh()->GetSocketLocation(PelvisBoneName);
 
-	// Delay character rotation
-	FTimerHandle DelayTimer;
-	GetWorld()->GetTimerManager().SetTimer(DelayTimer, [this, AdditiveRotation]() {
-		AddCharacterRotation(AdditiveRotation);
-	}, 1.0f, false, DelayTime);
+	// Set pawn movement
+	SetReplicateMovement(false);
+	GetCharacterMovement()->SetMovementMode(MOVE_None);
+
+	// Update capsule and mesh
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionObjectType(ECC_PhysicsBody);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetMesh()->SetAllBodiesBelowSimulatePhysics(PelvisBoneName, true, true);
+
+	//UpdateCamera(CameraLerpCurves[2]);
 }
 
- 
+void ATPBaseCharacter::ServerEnterRagdoll_Implementation() {
+	EnterRagdoll();
+}
+
+bool ATPBaseCharacter::ServerEnterRagdoll_Validate() {
+	return true;
+}
+
+void ATPBaseCharacter::EnterRagdoll() {
+	if (!HasAuthority()) {
+		ServerEnterRagdoll();
+		return;
+	}
+	MulticastEnterRagdoll();
+}
+
+
+// Called to exit character from ragdoll state 
+void ATPBaseCharacter::MulticastExitRagdoll_Implementation() {
+
+	// Set pawn movement
+	if (bRagdollGrounded) {
+		GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	}
+	else {
+		GetCharacterMovement()->SetMovementMode(MOVE_Falling);
+	}
+	GetCharacterMovement()->Velocity = GetCharacterVelocity();
+
+	// Save pose for blending play get-up
+	auto AInst = Cast<UTPBaseAnimInstance>(GetMesh()->GetAnimInstance());
+	if (AInst) {
+		AInst->SavePoseSnapshot(RagdollPoseName);
+
+		// Play getup montage if grounded
+		if (bRagdollGrounded) {
+			if (GetMesh()->GetSocketRotation(PelvisBoneName).Roll > 0.0f) {
+				AInst->Montage_Play(AInst->GetUpFront);
+			}
+			else {
+				AInst->Montage_Play(AInst->GetUpBack);
+			}
+		}
+	}
+
+	// Update capsule and mesh
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetMesh()->SetCollisionObjectType(ECC_Pawn);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	GetMesh()->SetAllBodiesSimulatePhysics(false);
+
+	bIsRagdoll = false;
+	SetReplicateMovement(true);
+	UpdateCamera(CameraLerpCurves[2]);
+}
+
+void ATPBaseCharacter::ServerExitRagdoll_Implementation() {
+	ExitRagdoll();
+}
+
+bool ATPBaseCharacter::ServerExitRagdoll_Validate() {
+	return true;
+}
+
+void ATPBaseCharacter::ExitRagdoll() {
+	if (!HasAuthority()) {
+		ServerExitRagdoll();
+		return;
+	}
+	MulticastExitRagdoll();
+}
+
+
+// Determines what it says it does :) 
+bool ATPBaseCharacter::RagdollLineTrace(FVector InLocation, FRotator InRotation, FVector& OutLocation, FRotator& OutRotation) {
+
+	// Keeps capsule facing proper direction if pelvis is inverted
+	if (InRotation.Roll > 0.0f) {
+		OutRotation = FRotator(0.0f, InRotation.Yaw, 0.0f);
+	}
+	else {
+		OutRotation = FRotator(0.0f, InRotation.Yaw - 180.0f, 0.0f);
+	}
+
+	// Trace endpoint
+	float HHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	FVector TraceEnd = InLocation;
+	TraceEnd.Z -= HHeight;
+
+	// Setup parameters
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	QueryParams.bTraceComplex = false;
+
+	// Trace world from location
+	FHitResult Hit;
+	OutLocation = InLocation;
+	bool bGrounded = GetWorld()->LineTraceSingleByChannel(Hit, InLocation, TraceEnd, ECC_Visibility, QueryParams);
+	if (bGrounded) {
+		OutLocation = Hit.ImpactPoint;
+		OutLocation.Z += HHeight;
+
+		// Debug traces
+		if (bShowTraces) {
+			DrawDebugPoint(GetWorld(), Hit.ImpactPoint, 10.0f, FColor::Red);
+			DrawDebugLine(GetWorld(), InLocation, Hit.ImpactPoint, FColor::Red);
+		}
+	}
+
+	return bGrounded;
+}
+
+

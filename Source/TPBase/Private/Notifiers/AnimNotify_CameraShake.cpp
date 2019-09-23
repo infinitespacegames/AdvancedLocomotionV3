@@ -10,6 +10,6 @@ void UAnimNotify_CameraShake::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 	ATPBaseCharacter* MyOwner = Cast<ATPBaseCharacter>(MeshComp->GetOwner());
 	if (!MyOwner) { return; }
 
-	MyOwner->CameraShakeNotify(ShakeClass, ShakeScale);
+	MyOwner->CameraShake_Notify(ShakeClass, ShakeScale);
 }
  

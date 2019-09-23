@@ -159,11 +159,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
 	bool IsSprinting() const;
 
-	/** Get current rotation mode */
+	/** Get current stance */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
 	EStance GetStance() const;
 
-	/** Get current rotation mode */
+	/** Get current gait mode */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
 	EGaitMode GetGaitMode() const;
 
@@ -224,8 +224,6 @@ public:
 	////////////////////////////////////////////////////////////////////
 
 	/** Set the character rotation */
-	//UFUNCTION(Server, Reliable, WithValidation)
-	//void 
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
 	void SetCharacterRotation(FRotator NewRotation, bool bDoInterp, float InterpSpeed);
 
@@ -298,6 +296,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
 	void CameraLerpCallback(float Alpha);
 
+	/** Updates capsule and arrow visibility */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
 	void UpdateCapsuleVisibility();
 
@@ -323,34 +322,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
 	void UpdateCamera(UCurveFloat* LerpCurve);
 
-	/** Called to enter character into ragdoll state */
-	UFUNCTION(NetMulticast, Reliable)
-	void MulticastEnterRagdoll();
-	
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerEnterRagdoll();
-	
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
-	void EnterRagdoll();
-
-	/** Called to exit character from ragdoll state */
-	UFUNCTION(NetMulticast, Reliable)
-	void MulticastExitRagdoll();
-	
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerExitRagdoll();
-	
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
-	void ExitRagdoll();
-
-	/** Handle animNotify turn in place event */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
-	void DelayedRotationNotify(FRotator AdditiveRotation, float DelayTime);
-
-	/** Handle animNotify camera shake event */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
-	void CameraShakeNotify(TSubclassOf<UCameraShake> ShakeClass, float ShakeScale);
-
 	/** Create arrow scene components */
 	void CreateArrowComponents();
 
@@ -364,9 +335,17 @@ public:
 public:
 	////////////////////////////////////////////////////////////////////
 	//
-	//   Character calculation functions
+	//   Character calculation / management functions
 	//
 	////////////////////////////////////////////////////////////////////
+
+	/** Handles adjustments to character rotation */
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
+	void ManageCharacterRotation();
+
+	/** Calculates the character current state */
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
+	void CalculateStateVariables();
 
 	/** Determines the looking yaw offset */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
@@ -376,38 +355,56 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
 	float WithinCardinalRange(float Value, float Min, float Max, float Tol, ECardinalDirection Cardinal);
 
-	/** Determines what it says it does :) */
+	/** Handle animNotify turn in place event */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
-	bool RagdollLineTrace(FVector InLocation, FRotator InRotation, FVector& OutLocation, FRotator& OutRotation);
+	void DelayedRotation_Notify(FRotator AdditiveRotation, float DelayTime);
 
-	/** Calculates the character current state */
+	/** Handle animNotify camera shake event */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
-	void CalculateStateVariables();
+	void CameraShake_Notify(TSubclassOf<UCameraShake> ShakeClass, float ShakeScale);
 
 
+public:
 	////////////////////////////////////////////////////////////////////
 	//
-	//   Rotation management functions
+	//   Ragdoll management functions
 	//
 	////////////////////////////////////////////////////////////////////
-
-	/** Handles adjustments to character rotation */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
-	void ManageCharacterRotation();
 
 	/** Handles the manipulation of the ragdoll state */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
 	void ManageRagdoll();
 
+	/** Called to update ragdoll state information */
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastRagdollUpdate(bool bGrounded, FVector DollLocation, FVector NewLocation, FRotator NewRotation);
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerRagdollUpdate(bool bGrounded, FVector DollLocation, FVector NewLocation, FRotator NewRotation);
 
-	/** Handle animNotify turn in place event */
+	/** Called to enter character into ragdoll state */
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastEnterRagdoll();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerEnterRagdoll();
+
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
-	void DelayedRotation(FRotator AdditiveRotation, float DelayTime);
+	void EnterRagdoll();
+
+	/** Called to exit character from ragdoll state */
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastExitRagdoll();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerExitRagdoll();
+
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
+	void ExitRagdoll();
+
+	/** Determines what it says it does :) */
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Utility")
+	bool RagdollLineTrace(FVector InLocation, FRotator InRotation, FVector& OutLocation, FRotator& OutRotation);
 
 
 public:
@@ -426,11 +423,25 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TPBase")
 	FName RagdollPoseName;
 
+	// TODO: Update character if changed
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase")
 	float HalfHeight = 90.0f;
 
+	// TODO: Update character if changed
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase")
 	float CrouchedHalfHeight = 60.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase")
+	bool bToggleSprint;
+
+	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase")
+	bool bRightFootForward;
+
+	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|Debug")
+	bool bShowSettings;
+
+	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|Debug")
+	bool bShowTraces;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|Camera")
 	bool bRightShoulder;
@@ -444,28 +455,19 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|Camera")
 	TArray<UCurveFloat*> CameraLerpCurves;
 
-	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|Debug")
-	bool bShowSettings;
-
-	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|Debug")
-	bool bShowTraces;
-
-	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|SpawnState")
-	bool bRightFootForward;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|Movement")
-	bool bToggleSprint;
-
 
 public:
 	////////////////////////////////////////////////////////////////////
 	//
-	//   Internally used replicated character variables
+	//   Internally used character variables
 	//
 	////////////////////////////////////////////////////////////////////
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "TPBase|InternalVariables")
 	bool bIsDead;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
+	bool bRagdollGrounded;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	bool bIsMoving;
@@ -475,9 +477,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	bool bIsRagdoll;
-
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
-	bool bRagdollGrounded;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	ECardinalDirection CardinalDirection;

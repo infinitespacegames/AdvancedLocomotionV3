@@ -412,12 +412,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	float PreviousSpeed;
 
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
-	//float VelocityDifference;
-
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
-	//float AccelerationDifferential;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	float StartPosition;
 
@@ -484,12 +478,12 @@ public:
 	UAnimSequenceBase* AdditiveLand;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	UAnimMontage* ActiveTurningMontage; 
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
 	UCurveFloat* FlailAlphaCurve;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
 	UCurveFloat* LandAlphaCurve;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
+	UAnimMontage* ActiveTurningMontage; 
 
 };
