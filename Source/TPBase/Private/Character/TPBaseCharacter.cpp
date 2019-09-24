@@ -32,13 +32,15 @@ ATPBaseCharacter::ATPBaseCharacter(const FObjectInitializer& ObjectInitializer) 
 
 	// Capsule and debug arrows
 	GetCapsuleComponent()->InitCapsuleSize(30.f, HalfHeight);
-	UCharacterMovementComponent* MC = GetCharacterMovement();
-	if (ensure(MC)) {
-		MC->CrouchedHalfHeight = CrouchedHalfHeight;
-		MC->bCanWalkOffLedgesWhenCrouching = true;
-		MC->bOrientRotationToMovement = false;
-		MC->bUseControllerDesiredRotation = false;
-		MC->NavAgentProps.bCanCrouch = true;
+	UCharacterMovementComponent* CharMov = GetCharacterMovement();
+	if (ensure(CharMov)) {
+		CharMov->CrouchedHalfHeight = CrouchedHalfHeight;
+		CharMov->bCanWalkOffLedgesWhenCrouching = true;
+		CharMov->bOrientRotationToMovement = false;
+		CharMov->bUseControllerDesiredRotation = false;
+		CharMov->NavAgentProps.bCanCrouch = true;
+		CharMov->JumpZVelocity = 500.0f;
+		CharMov->AirControl = 0.15f;
 	}
 	CreateArrowComponents();
 
@@ -47,7 +49,7 @@ ATPBaseCharacter::ATPBaseCharacter(const FObjectInitializer& ObjectInitializer) 
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 	JumpMaxHoldTime = 0.5f;
-
+	
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	TP_SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("TP_SpringArm"));
 	TP_SpringArm->SetupAttachment(RootComponent);
@@ -1294,7 +1296,7 @@ void ATPBaseCharacter::PrintCharacterInfo() {
 	PlayerInfo.Empty();
 	PlayerInfoWidget->SetColor(FColor::Blue);
 	PlayerInfo.Add(FString::Printf(TEXT("\nJump Velocity: %.0f  [Up/Down]"), JumpVelocity));
-	PlayerInfo.Add(FString::Printf(TEXT("Air Control: %.1f  [CTRL + Up/Down]"), AirControl));
+	PlayerInfo.Add(FString::Printf(TEXT("Air Control: %.2f  [CTRL + Up/Down]"), AirControl));
 	PlayerInfo.Add(FString::Printf(TEXT("Jump Max Hold Time: %.2f  [SHIFT + Up/Down]"), JumpMaxHoldTime));
 	PlayerInfoWidget->AddPlayerInfo(PlayerInfo);
 
@@ -1673,7 +1675,7 @@ void ATPBaseCharacter::DelayedRotation_Notify(FRotator AdditiveRotation, float D
 		AddCharacterRotation(AdditiveRotation);
 		return;
 	}
-
+	 
 	// Delay character rotation
 	FTimerHandle DelayTimer;
 	GetWorld()->GetTimerManager().SetTimer(DelayTimer, [this, AdditiveRotation]() {
@@ -1681,7 +1683,7 @@ void ATPBaseCharacter::DelayedRotation_Notify(FRotator AdditiveRotation, float D
 		}, 1.0f, false, DelayTime);
 }
 
-
+ 
 // Handle animNotify camera shake event 
 void ATPBaseCharacter::CameraShake_Notify(TSubclassOf<UCameraShake> ShakeClass, float ShakeScale) {
 	APlayerController* PC = Cast<APlayerController>(GetController());

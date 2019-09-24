@@ -520,18 +520,18 @@ void UTPBaseAnimInstance::Pivot_Notify(const FPivotParameters& Params) {
 }
 
 
-// Animation notify for idle entry
-void UTPBaseAnimInstance::IdleEntry_Notify(EIdleEntryState NewIdleState) {
-	IdleEntryState = NewIdleState;
-}
-
-
 // Animation notify for turning
 void UTPBaseAnimInstance::TurnInPlace_Notify(UAnimMontage* TurnAnim, bool bShouldTurn, bool bIsTurning, bool bRightTurn) {
 	ActiveTurningMontage = TurnAnim;
 	bShouldTurnInPlace = bShouldTurn;
 	bTurningInPlace = bIsTurning;
 	bTurningRight = bRightTurn;
+}
+
+
+// Animation notify for idle entry
+void UTPBaseAnimInstance::IdleEntry_Notify(EIdleEntryState NewIdleState) {
+	IdleEntryState = NewIdleState;
 }
 
 
@@ -602,14 +602,7 @@ void UTPBaseAnimInstance::UpdateAnimationState() {
 	ITPBaseInterfaceABP::Execute_OnSetRotationDifferential((UObject*)this, Character->RotationDifferential);
 	ITPBaseInterfaceABP::Execute_OnSetAimYawRate((UObject*)this, Character->AimYawRate);
 	ITPBaseInterfaceABP::Execute_OnSetAimYawDelta((UObject*)this, Character->AimYawDelta);
-
-	// TODO: Remove this dependence
-	if (Character->bIsRagdoll) {
-		ITPBaseInterfaceABP::Execute_OnSetLocomotionMode((UObject*)this, ELocomotionMode::eRagdoll);
-	}
-	else {
-		ITPBaseInterfaceABP::Execute_OnSetLocomotionMode((UObject*)this, Character->GetLocomotionMode());
-	}
+	ITPBaseInterfaceABP::Execute_OnSetIsRagdoll((UObject*)this, Character->bIsRagdoll);
 
 	// Character movement component data
 	auto CharMov = Character->GetTPBaseMovement();
@@ -623,6 +616,7 @@ void UTPBaseAnimInstance::UpdateAnimationState() {
 	ITPBaseInterfaceABP::Execute_OnSetStance((UObject*)this, CharMov->GetStance());
 	ITPBaseInterfaceABP::Execute_OnSetRotationMode((UObject*)this, CharMov->GetRotationMode());
 	ITPBaseInterfaceABP::Execute_OnSetGaitMode((UObject*)this, CharMov->GetGaitMode());
+	ITPBaseInterfaceABP::Execute_OnSetLocomotionMode((UObject*)this, CharMov->GetLocomotionMode());
 }
 
 

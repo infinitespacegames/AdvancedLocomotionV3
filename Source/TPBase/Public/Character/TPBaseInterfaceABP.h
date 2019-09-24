@@ -35,6 +35,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "TPBase|ABP_Interface")
 	void OnSetShowTraces(bool bShow);
 
+	/** Called to update animation ragdoll state */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "TPBase|ABP_Interface")
+	void OnSetIsRagdoll(bool bRagdoll);
+
 	/** Called to update animation aiming state */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "TPBase|ABP_Interface")
 	void OnSetIsAiming(bool bAiming);
@@ -131,3 +135,4 @@ public:
 	void OnSetAimYawDelta(float NewValue);
 
 };
+

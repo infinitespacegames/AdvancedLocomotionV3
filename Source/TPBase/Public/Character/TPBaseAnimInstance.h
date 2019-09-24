@@ -133,13 +133,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
 	void Pivot_Notify(const FPivotParameters& Params);
 
-	/** Animation notify for idle entry */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void IdleEntry_Notify(EIdleEntryState NewIdleState);
-
 	/** Animation notify for turning in place */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
 	void TurnInPlace_Notify(UAnimMontage* TurnAnim, bool bShouldTurn, bool bIsTurning, bool bRightTurn);
+
+	/** Animation notify for idle entry */
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
+	void IdleEntry_Notify(EIdleEntryState NewIdleState);
 
 	/** Animation notify for idle transitions */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
@@ -195,6 +195,9 @@ public:
 
 	/** Called to update animation debug traces state */
 	virtual void OnSetShowTraces_Implementation(bool bShow) { bShowTraces = bShow; };
+
+	/** Called to update animation ragdoll state */
+	virtual void OnSetIsRagdoll_Implementation(bool bRagdoll) { bIsRagdoll = bRagdoll; };
 
 	/** Called to update animation aiming state */
 	virtual void OnSetIsAiming_Implementation(bool bAiming) { bIsAiming = bAiming; };
@@ -275,6 +278,9 @@ protected:
 	//   Variables used within the animation blueprint
 	//
 	////////////////////////////////////////////////////////////////////
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TPBase|AnimGraph|CharacterState")
+	bool bIsRagdoll;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TPBase|AnimGraph|CharacterState")
 	bool bIsAiming;
