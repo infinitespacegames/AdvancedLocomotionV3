@@ -167,6 +167,7 @@ float UTPBaseMovement::GetGroundSpeed() const {
 	}
 	
 	if (IsSprinting()) { 
+		if (RotationMode == ERotationMode::eVelocityMode) { return SprintSpeed; }
 		return FMath::Abs((MovementInput.Rotation() - ControlRotation).GetNormalized().Yaw) > 50.0f ? RunSpeed : SprintSpeed;
 	}
 	

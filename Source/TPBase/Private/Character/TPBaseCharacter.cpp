@@ -1088,6 +1088,7 @@ void ATPBaseCharacter::SetRotationMode(ERotationMode NewMode) {
 	auto CharMov = GetTPBaseMovement();
 	if (!CharMov) { return; }
 
+	CharMov->SetRotationMode(NewMode);
 	if (bIsMoving) {
 		RotationRateMultiplier = 0.0f;
 	}
