@@ -78,6 +78,8 @@ ATPBaseCharacter::ATPBaseCharacter(const FObjectInitializer& ObjectInitializer) 
 
 	// Curves for view transitioning 
 	CameraLerpCurves.SetNum(4);
+
+	// Setup default curve
 	auto RichCurve = new FRichCurve();
 	auto Key = RichCurve->AddKey(0.0f, 0.0f);
 	RichCurve->AddKey(1.0f, 1.0f);
@@ -1680,7 +1682,7 @@ void ATPBaseCharacter::DelayedRotation_Notify(FRotator AdditiveRotation, float D
 	FTimerHandle DelayTimer;
 	GetWorld()->GetTimerManager().SetTimer(DelayTimer, [this, AdditiveRotation]() {
 		AddCharacterRotation(AdditiveRotation);
-		}, 1.0f, false, DelayTime);
+	}, 1.0f, false, DelayTime);
 }
 
  

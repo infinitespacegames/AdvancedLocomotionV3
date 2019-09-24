@@ -61,6 +61,12 @@ void UTPBaseAnimInstance::NativeUpdateAnimation(float DeltaTimeX) {
 	// Duh?
 	CalculateAimOffset();
 
+	// Ragdoll
+	if (bIsRagdoll) {
+		DoWhileRagdoll();
+		return;
+	}
+
 	// Animate according to state
 	switch (LocomotionMode) {
 	case ELocomotionMode::eGrounded:
@@ -88,9 +94,6 @@ void UTPBaseAnimInstance::NativeUpdateAnimation(float DeltaTimeX) {
 		break;
 	case ELocomotionMode::eFalling:
 		DoWhileFalling();
-		break;
-	case ELocomotionMode::eRagdoll:
-		DoWhileRagdoll();
 		break;
 	}
 }
@@ -178,7 +181,7 @@ void UTPBaseAnimInstance::DoDelayedTurn_Implementation(float MaxCameraSpeed,
 	float YawLimit2, float Delay2, float PlayRate2, FTurnAnimations TurnAnims2) {
 
 	float PlayRate, Delta;
-	UAnimMontage *Turn, *Turn1, * Turn2;
+	UAnimMontage *Turn, *Turn1, *Turn2;
 	
 	float DeltaTime = GetWorld()->GetDeltaSeconds();
 
@@ -215,9 +218,8 @@ void UTPBaseAnimInstance::DoDelayedTurn_Implementation(float MaxCameraSpeed,
 	}
 
 	bShouldTurnInPlace = TurnInPlaceDelay > Delta;
-	if (!Montage_IsPlaying(Turn)) {
-		Montage_Play(Turn, PlayRate);
-	}
+	if (Montage_IsPlaying(Turn)) { return; }
+	Montage_Play(Turn, PlayRate);
 }
 
 
@@ -230,7 +232,7 @@ void UTPBaseAnimInstance::DoResponsiveTurn_Implementation(float YawLimit, float 
 	bShouldTurnInPlace = FMath::Abs(AimYawDelta) > YawLimit;
 	if (!bShouldTurnInPlace) { return; }
 
-	Turn = FMath::Abs(AimYawDelta) > 0 ? TurnAnims.RightTurn : TurnAnims.LeftTurn;
+	Turn = AimYawDelta > 0 ? TurnAnims.RightTurn : TurnAnims.LeftTurn;
 
 	if (bTurningInPlace) {
 		if (bTurningRight) {
@@ -356,7 +358,7 @@ void UTPBaseAnimInstance::CalculateAimOffset_Implementation() {
 
 // Calculates pivot information
 void UTPBaseAnimInstance::CalculatePivot_Implementation() {
-	bool Trigger = FMath::IsNearlyEqual(YawDifferential, 0.0f, 45.0f);
+	bool Trigger = FMath::IsNearlyEqual(YawDifferential, PivotParameters.PivotDirection, 45.0f);
 	StartPosition = Trigger ? PivotParameters.InterruptedTime : PivotParameters.CompletedTime;
 	MovementDirection = Trigger ? PivotParameters.InterruptedDirection : PivotParameters.CompletedDirection;
 }
@@ -549,8 +551,9 @@ void UTPBaseAnimInstance::AnimNotify_Entered_Moving() {
 
 // Animation notify for entering locomotion state not moving
 void UTPBaseAnimInstance::AnimNotify_Entered_NotMoving() {
-	ActiveLocomotionState = ELocomotionState::eNotMoving;
-	MovementDirection = EMovementDirection::eForward;
+	UE_LOG(LogTemp, Warning, TEXT("Entered NotMoving"))
+	//ActiveLocomotionState = ELocomotionState::eNotMoving;
+	//MovementDirection = EMovementDirection::eForward;
 }
 
 
@@ -562,8 +565,9 @@ void UTPBaseAnimInstance::AnimNotify_Entered_Pivot() {
 
 // Animation notify for entering locomotion state stopping
 void UTPBaseAnimInstance::AnimNotify_Entered_Stopping() {
-	ActiveLocomotionState = ELocomotionState::eStopping;
-	FeetPosition = FVector2D(GetCurveValue("FootDirection"), GetCurveValue("FootPosition"));
+	UE_LOG(LogTemp, Warning, TEXT("Entered Stopping"))
+	//ActiveLocomotionState = ELocomotionState::eStopping;
+	//FeetPosition = FVector2D(GetCurveValue("FootDirection"), GetCurveValue("FootPosition"));
 }
  
 
@@ -638,15 +642,17 @@ void UTPBaseAnimInstance::OnSetLocomotionMode_Implementation(ELocomotionMode New
 	PrevLocomotionMode = LocomotionMode;
 	LocomotionMode = NewMode;
 
+	if (bIsRagdoll) {
+		Montage_Stop(0.2f);
+		return;
+	}
+
 	// Adjust animation variables
 	switch (LocomotionMode) {
 	case ELocomotionMode::eFalling:
 		N_PlayRate = 0.0f;
 		C_PlayRate = 0.0f;
 		bShouldTurnInPlace = false;
-		break;
-	case ELocomotionMode::eRagdoll:
-		Montage_Stop(0.2f);
 		break;
 	}
 }
