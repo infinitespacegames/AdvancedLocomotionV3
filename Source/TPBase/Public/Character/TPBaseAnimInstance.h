@@ -122,7 +122,7 @@ protected:
 	virtual void CalculateLandPredictionAlpha_Implementation();
 
 
-protected:
+public:
 	////////////////////////////////////////////////////////////////////
 	//
 	//   Animation notification events
@@ -147,39 +147,39 @@ protected:
 
 	/** Animation notify for entering locomotion state moving */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void Entered_Moving_Notify();
+	void AnimNotify_Entered_Moving();
 
 	/** Animation notify for leaving locomotion state moving */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void Left_Moving_Notify() {};
+	void AnimNotify_Left_Moving() {};
 
 	/** Animation notify for entering locomotion state not moving */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void Entered_NotMoving_Notify();
+	void AnimNotify_Entered_NotMoving();
 
 	/** Animation notify for leaving locomotion state not moving */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void Left_NotMoving_Notify() {};
+	void AnimNotify_Left_NotMoving() {};
 
 	/** Animation notify for entering locomotion state pivot */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void Entered_Pivot_Notify();
+	void AnimNotify_Entered_Pivot();
 
 	/** Animation notify for leaving locomotion state pivot */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void Left_Pivot_Notify() {};
+	void AnimNotify_Left_Pivot() {};
 
 	/** Animation notify for entering locomotion state stopping */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void Entered_Stopping_Notify();
+	void AnimNotify_Entered_Stopping();
 
 	/** Animation notify for leaving locomotion state stopping */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void Left_Stopping_Notify() {};
+	void AnimNotify_Left_Stopping() {};
 
 	/** Animation notify for landing */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void Land_Notify();
+	void AnimNotify_Land();
 
 
 public:

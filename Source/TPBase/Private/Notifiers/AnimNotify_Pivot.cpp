@@ -8,6 +8,6 @@ void UAnimNotify_Pivot::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSeque
 	UTPBaseAnimInstance* AInst = Cast<UTPBaseAnimInstance>(MeshComp->GetAnimInstance());
 	if (!AInst) { return; }
 
-	//AInst->AnimNotify_Pivot(PivotParams);
+	AInst->Pivot_Notify(PivotParams);
 }
  

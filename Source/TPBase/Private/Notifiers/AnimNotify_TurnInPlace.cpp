@@ -11,7 +11,7 @@ void UAnimNotify_TurnInPlace::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 	auto AInst = Cast<UTPBaseAnimInstance>(MeshComp->GetAnimInstance());
 	if (!AInst) { return; }
 
-	//AInst->TurnInPlaceNotify(Montage, true, true, bIsRightTurn);
+	AInst->TurnInPlace_Notify(Montage, true, true, bIsRightTurn);
 }
  
 
@@ -42,5 +42,5 @@ void UAnimNotify_TurnInPlace::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimS
 	auto AInst = Cast<UTPBaseAnimInstance>(MeshComp->GetAnimInstance());
 	if (!AInst) { return; }
 
-	//AInst->TurnInPlaceNotify(nullptr, false, false, false);
+	AInst->TurnInPlace_Notify(nullptr, false, false, false);
 }

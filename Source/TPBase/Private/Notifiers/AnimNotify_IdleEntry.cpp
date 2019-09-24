@@ -8,6 +8,6 @@ void UAnimNotify_IdleEntry::Notify(USkeletalMeshComponent* MeshComp, UAnimSequen
 	UTPBaseAnimInstance* AInst = Cast<UTPBaseAnimInstance>(MeshComp->GetAnimInstance());
 	if (!AInst) { return; }
 
-	//AInst->IdleEntry_Notify(IdleEntryState);
+	AInst->IdleEntry_Notify(IdleEntryState);
 }
  
