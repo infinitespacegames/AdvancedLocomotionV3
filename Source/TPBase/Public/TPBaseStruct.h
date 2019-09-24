@@ -120,16 +120,17 @@ struct TPBASE_API FPivotParameters {
 	float PivotDirection;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PivotParameters")
+	EMovementDirection CompletedDirection = EMovementDirection::eForward;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PivotParameters")
 	float CompletedTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PivotParameters")
+	EMovementDirection InterruptedDirection = EMovementDirection::eBackward;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PivotParameters")
 	float InterruptedTime;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PivotParameters")
-	EMovementDirection CompletedDirection;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PivotParameters")
-	EMovementDirection InterruptedDirection;
 };
 
 

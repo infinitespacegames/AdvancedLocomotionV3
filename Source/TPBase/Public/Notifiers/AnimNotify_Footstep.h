@@ -19,25 +19,30 @@ class TPBASE_API UAnimNotify_Footstep : public UAnimNotify {
 
 	GENERATED_BODY()
 
+public:
+
+	UAnimNotify_Footstep();
+	
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
 
+protected:
 
 	UPROPERTY(EditAnywhere, Category = "Parameters")
-	USoundBase* Sound;
-
-	UPROPERTY(EditAnywhere, Category = "Parameters")
-	float VolumeMultiplier;
-
-	UPROPERTY(EditAnywhere, Category = "Parameters")
-	float PitchMultiplier;
-
-	UPROPERTY(EditAnywhere, Category = "Parameters")
-	FName AttachPointName;
-
-	UPROPERTY(EditAnywhere, Category = "Parameters")
-	bool PlayReversed;
+	USoundBase* FootstepCue;
 
 	UPROPERTY(EditAnywhere, Category = "Parameters")
 	EFootstepType FootstepType;
+
+	UPROPERTY(EditAnywhere, Category = "Parameters")
+	float VolumeMultiplier = 1.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Parameters")
+	float PitchMultiplier = 1.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Parameters")
+	FName AttachPointName = "root";
+
+	UPROPERTY(EditAnywhere, Category = "Parameters")
+	bool PlayReversed = false;
 
 };
