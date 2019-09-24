@@ -551,9 +551,8 @@ void UTPBaseAnimInstance::AnimNotify_Entered_Moving() {
 
 // Animation notify for entering locomotion state not moving
 void UTPBaseAnimInstance::AnimNotify_Entered_NotMoving() {
-	UE_LOG(LogTemp, Warning, TEXT("Entered NotMoving"))
-	//ActiveLocomotionState = ELocomotionState::eNotMoving;
-	//MovementDirection = EMovementDirection::eForward;
+	ActiveLocomotionState = ELocomotionState::eNotMoving;
+	MovementDirection = EMovementDirection::eForward;
 }
 
 
@@ -565,9 +564,8 @@ void UTPBaseAnimInstance::AnimNotify_Entered_Pivot() {
 
 // Animation notify for entering locomotion state stopping
 void UTPBaseAnimInstance::AnimNotify_Entered_Stopping() {
-	UE_LOG(LogTemp, Warning, TEXT("Entered Stopping"))
-	//ActiveLocomotionState = ELocomotionState::eStopping;
-	//FeetPosition = FVector2D(GetCurveValue("FootDirection"), GetCurveValue("FootPosition"));
+	ActiveLocomotionState = ELocomotionState::eStopping;
+	FeetPosition = FVector2D(GetCurveValue("FootDirection"), GetCurveValue("FootPosition"));
 }
  
 
