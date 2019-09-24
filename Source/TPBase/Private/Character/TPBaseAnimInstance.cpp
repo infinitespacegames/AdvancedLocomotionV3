@@ -517,13 +517,13 @@ void UTPBaseAnimInstance::DoWhileRagdoll_Implementation() {
 
 
 // Animation notify for pivot
-void UTPBaseAnimInstance::Pivot_Notify(const FPivotParameters& Params) {
+void UTPBaseAnimInstance::Pivot_Notify_Implementation(const FPivotParameters& Params) {
 	PivotParameters = Params;
 }
 
 
 // Animation notify for turning
-void UTPBaseAnimInstance::TurnInPlace_Notify(UAnimMontage* TurnAnim, bool bShouldTurn, bool bIsTurning, bool bRightTurn) {
+void UTPBaseAnimInstance::TurnInPlace_Notify_Implementation(UAnimMontage* TurnAnim, bool bShouldTurn, bool bIsTurning, bool bRightTurn) {
 	ActiveTurningMontage = TurnAnim;
 	bShouldTurnInPlace = bShouldTurn;
 	bTurningInPlace = bIsTurning;
@@ -532,45 +532,61 @@ void UTPBaseAnimInstance::TurnInPlace_Notify(UAnimMontage* TurnAnim, bool bShoul
 
 
 // Animation notify for idle entry
-void UTPBaseAnimInstance::IdleEntry_Notify(EIdleEntryState NewIdleState) {
+void UTPBaseAnimInstance::IdleEntry_Notify_Implementation(EIdleEntryState NewIdleState) {
 	IdleEntryState = NewIdleState;
 }
 
 
 // Animation notify for idle transitions 
-void UTPBaseAnimInstance::IdleTransition_Notify(UAnimSequenceBase* Animation, float PlayRate, float StartTime) {
+void UTPBaseAnimInstance::IdleTransition_Notify_Implementation(UAnimSequenceBase* Animation, float PlayRate, float StartTime) {
 	PlaySlotAnimationAsDynamicMontage(Animation, "Transition", 0.2f, 0.2f, PlayRate, 1, 0.0f, StartTime);
 }
 
 
 // Animation notify for entering locomotion state moving
-void UTPBaseAnimInstance::AnimNotify_Entered_Moving() {
+void UTPBaseAnimInstance::AnimNotify_Entered_Moving_Implementation() {
 	ActiveLocomotionState = ELocomotionState::eMoving;
 }
 
 
+// Animation notify for leaving locomotion state moving 
+void  UTPBaseAnimInstance::AnimNotify_Left_Moving_Implementation() {}
+
+
 // Animation notify for entering locomotion state not moving
-void UTPBaseAnimInstance::AnimNotify_Entered_NotMoving() {
+void UTPBaseAnimInstance::AnimNotify_Entered_NotMoving_Implementation() {
 	ActiveLocomotionState = ELocomotionState::eNotMoving;
 	MovementDirection = EMovementDirection::eForward;
 }
 
 
+// Animation notify for leaving locomotion state not moving 
+void  UTPBaseAnimInstance::AnimNotify_Left_NotMoving_Implementation() {}
+
+
 // Animation notify for entering locomotion state pivot
-void UTPBaseAnimInstance::AnimNotify_Entered_Pivot() {
+void UTPBaseAnimInstance::AnimNotify_Entered_Pivot_Implementation() {
 	ActiveLocomotionState = ELocomotionState::ePivot;
 }
 
 
+// Animation notify for leaving locomotion state pivot
+void UTPBaseAnimInstance::AnimNotify_Left_Pivot_Implementation() {}
+
+
 // Animation notify for entering locomotion state stopping
-void UTPBaseAnimInstance::AnimNotify_Entered_Stopping() {
+void UTPBaseAnimInstance::AnimNotify_Entered_Stopping_Implementation() {
 	ActiveLocomotionState = ELocomotionState::eStopping;
 	FeetPosition = FVector2D(GetCurveValue("FootDirection"), GetCurveValue("FootPosition"));
 }
  
 
+// Animation notify for leaving locomotion state stopping
+void  UTPBaseAnimInstance::AnimNotify_Left_Stopping_Implementation() {}
+
+
 // Animation notify for landing 
-void UTPBaseAnimInstance::AnimNotify_Land() {
+void UTPBaseAnimInstance::AnimNotify_Land_Implementation() {
 	if (!AdditiveLand) { return; }
 	PlaySlotAnimationAsDynamicMontage(AdditiveLand, "AdditiveLand", 0.0f, 0.2f, 1.25f, 1, 0.0f);
 }

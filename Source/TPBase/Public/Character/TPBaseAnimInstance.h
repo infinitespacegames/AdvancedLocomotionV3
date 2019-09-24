@@ -127,58 +127,59 @@ public:
 	//
 	//   Animation notification events
 	//
+	//	TODO: Make notifies blueprint native
 	////////////////////////////////////////////////////////////////////
 
 	/** Animation notify for pivot */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
 	void Pivot_Notify(const FPivotParameters& Params);
 
 	/** Animation notify for turning in place */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
 	void TurnInPlace_Notify(UAnimMontage* TurnAnim, bool bShouldTurn, bool bIsTurning, bool bRightTurn);
 
 	/** Animation notify for idle entry */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
 	void IdleEntry_Notify(EIdleEntryState NewIdleState);
 
 	/** Animation notify for idle transitions */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
 	void IdleTransition_Notify(UAnimSequenceBase* Animation, float PlayRate, float StartTime);
 
 	/** Animation notify for entering locomotion state moving */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
 	void AnimNotify_Entered_Moving();
 
 	/** Animation notify for leaving locomotion state moving */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void AnimNotify_Left_Moving() {};
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
+	void AnimNotify_Left_Moving();
 
 	/** Animation notify for entering locomotion state not moving */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
 	void AnimNotify_Entered_NotMoving();
 
 	/** Animation notify for leaving locomotion state not moving */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void AnimNotify_Left_NotMoving() {};
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
+	void AnimNotify_Left_NotMoving();
 
 	/** Animation notify for entering locomotion state pivot */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
 	void AnimNotify_Entered_Pivot();
 
 	/** Animation notify for leaving locomotion state pivot */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void AnimNotify_Left_Pivot() {};
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
+	void AnimNotify_Left_Pivot();
 
 	/** Animation notify for entering locomotion state stopping */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
 	void AnimNotify_Entered_Stopping();
 
 	/** Animation notify for leaving locomotion state stopping */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
-	void AnimNotify_Left_Stopping() {};
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
+	void AnimNotify_Left_Stopping();
 
 	/** Animation notify for landing */
-	UFUNCTION(BlueprintCallable, Category = "TPBase|Notifications")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TPBase|Notifications")
 	void AnimNotify_Land();
 
 
