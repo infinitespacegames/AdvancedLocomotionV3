@@ -63,6 +63,7 @@ void UTPBaseAnimInstanceIK::NativeUpdateAnimation(float DeltaTimeX) {
 //
 //   Inverse kinematic functions, can be overriden in blueprint or C++
 //
+//  TODO: Bad transformation causes crash, check
 ////////////////////////////////////////////////////////////////////
 
 // Handles IK for normal modes 
@@ -110,8 +111,8 @@ void UTPBaseAnimInstanceIK::FootIK_Implementation() {
 		
 		// Determine offset target left foot
 		LFOffsetTarget = FVector(
-			FMath::Atan2(Hit.Normal.Y, Hit.Normal.Z),
-			FMath::Atan2(Hit.Normal.X, Hit.Normal.Z),
+			FMath::RadiansToDegrees(FMath::Atan2(Hit.Normal.Y, Hit.Normal.Z)),
+			FMath::RadiansToDegrees(FMath::Atan2(Hit.Normal.X, Hit.Normal.Z)),
 			Hit.Location.Z - RootLocation.Z
 		);
 
@@ -133,8 +134,8 @@ void UTPBaseAnimInstanceIK::FootIK_Implementation() {
 
 		// Determine offset target left foot
 		RFOffsetTarget = FVector(
-			FMath::Atan2(Hit.Normal.Y, Hit.Normal.Z),
-			FMath::Atan2(Hit.Normal.X, Hit.Normal.Z),
+			FMath::RadiansToDegrees(FMath::Atan2(Hit.Normal.Y, Hit.Normal.Z)),
+			FMath::RadiansToDegrees(FMath::Atan2(Hit.Normal.X, Hit.Normal.Z)),
 			Hit.Location.Z - RootLocation.Z
 		);
 
@@ -173,7 +174,7 @@ void UTPBaseAnimInstanceIK::FootIK_Implementation() {
 			DeltaTime,
 			Z_InterpolationSpeed)
 	);
-
+	
 	// Set pelvis offset
 	PelvisOffset = (LeftFootOffset.Z < RightFootOffset.Z) ? LeftFootOffset.Z : RightFootOffset.Z;
 }
@@ -217,6 +218,7 @@ void UTPBaseAnimInstanceIK::UpdateAnimationState() {
 	// Character movement component state
 	auto CharMov = Character->GetTPBaseMovement();
 	if (!CharMov) { return; }
+
 	ITPBaseInterfaceABPIK::Execute_OnSetStance((UObject*)this, CharMov->GetStance());
 	ITPBaseInterfaceABPIK::Execute_OnSetLocomotionMode((UObject*)this, CharMov->GetLocomotionMode());
 }

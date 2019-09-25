@@ -127,7 +127,6 @@ public:
 	//
 	//   Animation notification events
 	//
-	//	TODO: Make notifies blueprint native
 	////////////////////////////////////////////////////////////////////
 
 	/** Animation notify for pivot */
