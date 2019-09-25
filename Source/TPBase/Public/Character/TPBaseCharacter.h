@@ -239,6 +239,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
 	void SetCameraMode(ECameraMode NewMode);
 
+	/** Called to update camera gait mode for target settings */
+	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
+	void SetCameraGaitMode(float Speed);
+
 	/** Interface callback for updating camera view shoulder */
 	UFUNCTION(BlueprintCallable, Category = "TPBase|Character|Setters")
 	void SetRightShoulder(bool bRight);

@@ -64,6 +64,9 @@ public:
 	/** Called to update animation debug traces state */
 	virtual void OnSetShowTraces_Implementation(bool bShow) { bShowTraces = bShow; };
 
+	/** Called to update animation debug traces state */
+	virtual void OnSetIsRagdoll_Implementation(bool bRagdoll) { bIsRagdoll = bRagdoll; };
+
 	/** Called to update animation stance */
 	virtual void OnSetStance_Implementation(EStance NewStance) { Stance = NewStance; };
 
@@ -96,13 +99,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase")
 	float Z_InterpolationSpeed;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|Debug")
-	bool bShowTraces;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|Debug")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|Linetrace")
 	float TraceHeightAboveFoot;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|Debug")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|Linetrace")
 	float TraceHeightBelowFoot;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|Limits")
@@ -117,6 +117,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|Limits")
 	FVector CrouchingMaxLimits;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|CharacterState")
+	bool bShowTraces;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|CharacterState")
+	bool bIsRagdoll;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|CharacterState")
+	EStance Stance;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|CharacterState")
+	ELocomotionMode LocomotionMode;
+
 
 protected:
 	////////////////////////////////////////////////////////////////////
@@ -130,12 +142,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	float PelvisOffset;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
-	EStance Stance;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
-	ELocomotionMode LocomotionMode;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TPBase|InternalVariables")
 	FVector LeftFootOffset;

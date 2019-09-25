@@ -73,6 +73,22 @@ struct TPBASE_API FCameraStanceSettings {
 
 
 /**
+ *  Structure for holding multiple settings based on stance
+ */
+USTRUCT(BlueprintType)
+struct TPBASE_API FCameraAimingSettings {
+
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraSettings")
+	FCameraSettings Standing;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraSettings")
+	FCameraSettings Crouching;
+};
+
+
+/**
  * Structure for holding settings for all animation states
  */
 USTRUCT(BlueprintType)
@@ -87,7 +103,7 @@ struct TPBASE_API FCameraTargetSettings {
 	FCameraStanceSettings LookingMode;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraSettings")
-	FCameraSettings Aiming;
+	FCameraAimingSettings Aiming;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraSettings")
 	FCameraSettings Ragdoll;
@@ -102,7 +118,8 @@ struct TPBASE_API FCameraTargetSettings {
 		LookingMode.Standing.Run.Setup(300.0f, 15.0f, FVector(0.0f, 60.0f, 60.0f), 95.0f);
 		LookingMode.Standing.Sprint.Setup(325.0f, 15.0f, FVector(0.0f, 50.0f, 50.0f), 110.0f);
 		LookingMode.Crouching.Setup(250.0f, 15.0f, FVector(0.0f, 60.0f, 45.0f), 90.0f);
-		Aiming.Setup(200.0f, 20.0f, FVector(0.0f, 70.0f, 45.0f), 45.0f);
+		Aiming.Standing.Setup(200.0f, 20.0f, FVector(0.0f, 70.0f, 45.0f), 45.0f);
+		Aiming.Crouching.Setup(200.0f, 20.0f, FVector(0.0f, 70.0f, 0.0f), 45.0f);
 		Ragdoll.Setup(350.0f, 50.0f, FVector(0.0f, 0.0f, -20.0f), 90.0f);
 	}
 };

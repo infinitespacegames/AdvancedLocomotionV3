@@ -14,6 +14,7 @@ UTPBaseAnimInstanceIK::UTPBaseAnimInstanceIK() {
 	LeftFootBoneName = "foot_l";
 	RightFootBoneName = "foot_r";
 	bShowTraces = false;
+	bIsRagdoll = false;
 	bEnableFootIK = true;
 	FootIKAlpha = 1.0f;;
 	TraceHeightAboveFoot = 50.0f;
@@ -43,6 +44,11 @@ void UTPBaseAnimInstanceIK::NativeUpdateAnimation(float DeltaTimeX) {
 
 	UpdateAnimationState();
 
+	if (bIsRagdoll) {
+		RagdollIK();
+		return;
+	}
+
 	// Handle IK
 	switch (LocomotionMode) {
 	case ELocomotionMode::eGrounded:
@@ -50,9 +56,6 @@ void UTPBaseAnimInstanceIK::NativeUpdateAnimation(float DeltaTimeX) {
 		break;
 	case ELocomotionMode::eFalling:
 		bEnableFootIK = false;
-		break;
-	case ELocomotionMode::eRagdoll:
-		RagdollIK();
 		break;
 	}
 }
@@ -122,6 +125,10 @@ void UTPBaseAnimInstanceIK::FootIK_Implementation() {
 			ClampVector(LFOffsetTarget, StandingMinLimits, StandingMaxLimits);
 		LFOffsetTarget.Y *= -1.0f;
 	}
+	else if (bShowTraces) {
+		DrawDebugPoint(GetWorld(), LFEnd, 15.0f, FColor::Blue);
+		DrawDebugLine(GetWorld(), LFStart, LFEnd, FColor::Blue, false, 0.0f, 0, 2.0f);
+	}
 
 	// Trace world for right foot
 	if (GetWorld()->LineTraceSingleByChannel(Hit, RFStart, RFEnd, ECC_Visibility, QueryParams)) {
@@ -144,6 +151,10 @@ void UTPBaseAnimInstanceIK::FootIK_Implementation() {
 			ClampVector(RFOffsetTarget, CrouchingMinLimits, CrouchingMaxLimits) :
 			ClampVector(RFOffsetTarget, StandingMinLimits, StandingMaxLimits);
 		RFOffsetTarget.Y *= -1.0f;
+	}
+	else if (bShowTraces) {
+		DrawDebugPoint(GetWorld(), RFEnd, 15.0f, FColor::Blue);
+		DrawDebugLine(GetWorld(), RFStart, RFEnd, FColor::Blue, false, 0.0f, 0, 2.0f);
 	}
 
 	float DeltaTime = GetWorld()->GetDeltaSeconds();
@@ -214,6 +225,7 @@ void UTPBaseAnimInstanceIK::UpdateAnimationState() {
 	if (!Character) { return; }
 
 	ITPBaseInterfaceABPIK::Execute_OnSetShowTraces((UObject*)this, Character->bShowTraces);
+	ITPBaseInterfaceABPIK::Execute_OnSetIsRagdoll((UObject*)this, Character->bIsRagdoll);
 
 	// Character movement component state
 	auto CharMov = Character->GetTPBaseMovement();

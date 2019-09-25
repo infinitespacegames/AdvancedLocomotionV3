@@ -743,7 +743,10 @@ FCameraSettings ATPBaseCharacter::GetCameraTargetSettings() const {
 	if (bIsRagdoll) { return CameraTargets.Ragdoll;	}
 
 	// Aiming
-	if (IsAiming()) { return CameraTargets.Aiming; }
+	if (IsAiming()) {
+		if (GetStance() == EStance::eCrouching) { return CameraTargets.Aiming.Crouching; }
+		return CameraTargets.Aiming.Standing;
+	}
 
 	// Locomotion mode
 	ELocomotionMode LocomotionMode = GetLocomotionMode();
@@ -1008,6 +1011,43 @@ void ATPBaseCharacter::SetCameraMode(ECameraMode NewMode) {
 }
 
 
+// Called to update camera gait mode for target settings 
+void ATPBaseCharacter::SetCameraGaitMode(float Speed) {
+	if (IsAiming()) { return; }
+
+	if (CameraGaitMode == EGaitMode::eSprinting) {
+		if (Speed < GetWalkingSpeed()) {
+			CameraGaitMode = EGaitMode::eWalking;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+		else if (Speed < GetRunningSpeed()) {
+			CameraGaitMode = EGaitMode::eRunning;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+	}
+	else if (CameraGaitMode == EGaitMode::eRunning) {
+		if (Speed > GetRunningSpeed()) {
+			CameraGaitMode = EGaitMode::eSprinting;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+		else if (Speed < GetWalkingSpeed()) {
+			CameraGaitMode = EGaitMode::eWalking;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+	}
+	else {
+		if (Speed > GetRunningSpeed()) {
+			CameraGaitMode = EGaitMode::eSprinting;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+		else if (Speed > GetWalkingSpeed()) {
+			CameraGaitMode = EGaitMode::eRunning;
+			UpdateCamera(CameraLerpCurves[2]);
+		}
+	}
+}
+
+
 // Interface callback for updating forward foot 
 bool ATPBaseCharacter::ServerSetForwardFoot_Validate(bool bRightFoot) {
 	return true;
@@ -1112,6 +1152,12 @@ void ATPBaseCharacter::SetLocomotionMode(ELocomotionMode NewMode) {
 	PrevLocomotionMode = LocomotionMode;
 	LocomotionMode = NewMode;
 
+	if (bIsRagdoll) {
+		JumpRotation = CharacterRotation;
+		UpdateCamera(CameraLerpCurves[2]);
+		return;
+	}
+
 	// Set Jump rotation and update camera
 	switch (PrevLocomotionMode) {
 	case ELocomotionMode::eGrounded:
@@ -1123,9 +1169,6 @@ void ATPBaseCharacter::SetLocomotionMode(ELocomotionMode NewMode) {
 		}
 		RotationOffset = 0.0f;
 		break; 
-	case ELocomotionMode::eRagdoll:
-		JumpRotation = CharacterRotation;
-		break;
 	}
 	UpdateCamera(CameraLerpCurves[2]);
 }
@@ -1570,38 +1613,8 @@ void ATPBaseCharacter::CalculateStateVariables() {
 	AimYawRate = (LookRotation.Yaw - PrevAimYaw) / GetWorld()->GetDeltaSeconds();
 	AimYawDelta = (LookRotation - CharacterRotation).GetNormalized().Yaw;
 
-	// TODO: Refactor to function
 	// Camera gait mode
-	if (CameraGaitMode == EGaitMode::eSprinting) {
-		if (MySpeed < GetWalkingSpeed()) {
-			CameraGaitMode = EGaitMode::eWalking;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-		else if (MySpeed < GetRunningSpeed()) {
-			CameraGaitMode = EGaitMode::eRunning;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-	}
-	else if (CameraGaitMode == EGaitMode::eRunning) {
-		if (MySpeed > GetRunningSpeed()) {
-			CameraGaitMode = EGaitMode::eSprinting;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-		else if (MySpeed < GetWalkingSpeed()) {
-			CameraGaitMode = EGaitMode::eWalking;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-	}
-	else {
-		if (MySpeed > GetRunningSpeed()) {
-			CameraGaitMode = EGaitMode::eSprinting;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-		else if (MySpeed > GetWalkingSpeed()) {
-			CameraGaitMode = EGaitMode::eRunning;
-			UpdateCamera(CameraLerpCurves[2]);
-		}
-	}
+	SetCameraGaitMode(MySpeed);
 }
 
 

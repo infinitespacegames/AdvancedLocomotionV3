@@ -272,6 +272,50 @@ public:
 	virtual void OnSetAimYawDelta_Implementation(float NewValue) { AimYawDelta = NewValue; };
 
 
+public:
+	////////////////////////////////////////////////////////////////////
+	//
+	//   Animation assets
+	//
+	////////////////////////////////////////////////////////////////////
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	FTurnAnimations N_Turn_90;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	FTurnAnimations N_Turn_180;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	FTurnAnimations LF_Turn_90;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	FTurnAnimations RF_Turn_90;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	FTurnAnimations CLF_Turn_90;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	FTurnAnimations CRF_Turn_90;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	UAnimMontage* GetUpBack;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	UAnimMontage* GetUpFront;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	UAnimSequenceBase* AdditiveLand;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	UCurveFloat* FlailAlphaCurve;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	UCurveFloat* LandAlphaCurve;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "TPBase|AnimationAssets")
+	UAnimMontage* ActiveTurningMontage; 
+
+
 protected:
 	////////////////////////////////////////////////////////////////////
 	//
@@ -377,10 +421,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TPBase|CharacterState")
 	FRotator CharacterRotation;
 
-	UPROPERTY(VisibleAnywhere, Category = "TPBase|CharacterState")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TPBase|CharacterState")
 	FRotator PrevMovementRotation;
 
-	UPROPERTY(VisibleAnywhere, Category = "TPBase|CharacterState")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TPBase|CharacterState")
 	FRotator PrevVelocityRotation;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TPBase|CharacterState")
@@ -449,47 +493,5 @@ protected:
 	FPivotParameters PivotParameters;
 
 
-public:
-	////////////////////////////////////////////////////////////////////
-	//
-	//   Animation assets
-	//
-	////////////////////////////////////////////////////////////////////
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	FTurnAnimations N_Turn_90;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	FTurnAnimations N_Turn_180;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	FTurnAnimations LF_Turn_90;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	FTurnAnimations RF_Turn_90;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	FTurnAnimations CLF_Turn_90;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	FTurnAnimations CRF_Turn_90;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	UAnimMontage* GetUpBack;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	UAnimMontage* GetUpFront;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	UAnimSequenceBase* AdditiveLand;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	UCurveFloat* FlailAlphaCurve;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	UCurveFloat* LandAlphaCurve;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "TPBase|AnimationAssets")
-	UAnimMontage* ActiveTurningMontage; 
 
 };

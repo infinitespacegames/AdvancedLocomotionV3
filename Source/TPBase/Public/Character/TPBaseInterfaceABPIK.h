@@ -35,6 +35,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "TPBase|ABPIK_Interface")
 	void OnSetShowTraces(bool bShow);
 
+	/** Called to update animation ragdoll state */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "TPBase|ABPIK_Interface")
+	void OnSetIsRagdoll(bool bRagdoll);
+
 	/** Called to update animation stance */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "TPBase|ABPIK_Interface")
 	void OnSetStance(EStance NewStance);

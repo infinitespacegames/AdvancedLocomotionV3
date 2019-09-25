@@ -67,8 +67,7 @@ UENUM(BlueprintType)
 enum class ELocomotionMode : uint8 {
 	eNone UMETA(DisplayName = "None"),
 	eGrounded UMETA(DisplayName = "Grounded"),
-	eFalling UMETA(DisplayName = "Falling"),
-	eRagdoll UMETA(DisplayName = "Ragdoll")
+	eFalling UMETA(DisplayName = "Falling")
 };
 
 
