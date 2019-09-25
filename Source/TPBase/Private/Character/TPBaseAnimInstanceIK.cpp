@@ -44,6 +44,7 @@ void UTPBaseAnimInstanceIK::NativeUpdateAnimation(float DeltaTimeX) {
 
 	UpdateAnimationState();
 
+	// Ragdoll IK
 	if (bIsRagdoll) {
 		RagdollIK();
 		return;
@@ -171,6 +172,7 @@ void UTPBaseAnimInstanceIK::FootIK_Implementation() {
 			DeltaTime,
 			Z_InterpolationSpeed)
 	);
+	if (LeftFootOffset.ContainsNaN()) { LeftFootOffset = FVector(0.0f); }
 
 	// Interpolate right foot
 	RightFootOffset = FVector(
@@ -185,7 +187,8 @@ void UTPBaseAnimInstanceIK::FootIK_Implementation() {
 			DeltaTime,
 			Z_InterpolationSpeed)
 	);
-	
+	if (RightFootOffset.ContainsNaN()) { RightFootOffset = FVector(0.0f); }
+
 	// Set pelvis offset
 	PelvisOffset = (LeftFootOffset.Z < RightFootOffset.Z) ? LeftFootOffset.Z : RightFootOffset.Z;
 }
